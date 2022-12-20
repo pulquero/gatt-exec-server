@@ -1,0 +1,42 @@
+#!/bin/bash
+
+source "/data/SetupHelper/CommonResources"
+
+configFile="$setupOptionsDir/config.json"
+
+packageLogFile="/var/log/gatt-exec-server/current"
+
+
+#### running manually and OK to proceed - prompt for input
+if [ $scriptAction == 'NONE' ] ; then
+	# display initial message
+	echo
+	echo "gatt-exec-server"
+	
+	standardActionPrompt
+fi
+
+
+#### install code goes here
+if [ $scriptAction == 'INSTALL' ] ; then
+
+	logMessage "++ Installing gatt-exec-server service"
+
+	if [ ! -f "$configFile" ]; then
+		echo "{\"wifi-on\": \"connmanctl enable wifi\", \"wifi-off\": \"connmanctl disable wifi\"}" > "$configFile"
+	fi
+
+	installService $packageName
+fi
+
+
+#### uninstalling - check scriptAction again
+# if an install step failed package needs to be removed
+if [ $scriptAction == 'UNINSTALL' ] ; then
+	logMessage "++ Uninstalling gatt-exec-server service"
+
+	removeService $packageName
+fi
+
+
+endScript
