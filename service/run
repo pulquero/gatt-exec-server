@@ -1,3 +1,5 @@
 #!/bin/sh
+# wait for bluetooth to initialize
+sleep 30
 exec 2>&1
 exec /data/gatt-exec-server/gatt-exec-server.py
